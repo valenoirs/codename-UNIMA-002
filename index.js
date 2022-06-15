@@ -54,6 +54,7 @@ app.use('/', require('./routes/view'))
 
 app.use('/user', require('./routes/user'))
 app.use('/barang', require('./routes/barang'))
+app.use('/peminjam', require('./routes/peminjam'))
 
 // Ping Server!
 app.get('/ping', (req, res, next) => {

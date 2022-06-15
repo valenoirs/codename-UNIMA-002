@@ -1,0 +1,46 @@
+<div className="container-fluid" style="padding-top: 4rem;">
+    <div class="row">
+        <div class="col p-5">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width: 3rem;">No</th>
+                    <th scope="col">Kode Barang</th>
+                    <th scope="col">Nama Barang</th>
+                    <th scope="col">Stock</th>
+                    <% if (locals.userId) { %>
+                        <th scope="col" style="width: 10rem;">Detail</th>
+                    <% } %>
+                  </tr>
+                </thead>
+                <tbody>
+                    <% barang.forEach((barang, index) => { %>
+                        <tr>
+                          <th scope="row"><%= index + 1 %></th>
+                          <td><%= barang.code %></td>
+                          <td><%= barang.name %></td>
+                          <td><%= barang.stock %></td>
+                          <% if (locals.userId) { %>
+                            <td>
+                                <div class="input-group">
+                                    <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#edit<%= barang.id %>">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </button>
+                                    <button type="submit" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#delete<%= barang.id %>">
+                                        <i class="bi bi-file-earmark-x-fill"></i>
+                                    </button>
+                                </div>
+                            </td>
+                          <% } %>
+                        </tr>
+                    <% }) %>
+                </tbody>
+              </table>
+              <% if (locals.userId) { %>
+                <button type="button" class="btn btn-outline-dark mt-4" data-bs-toggle="modal" data-bs-target="#tambahBarang">
+                  Tambah Barang
+                </button>
+              <% } %>
+        </div>
+    </div>
+</div>

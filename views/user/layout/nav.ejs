@@ -12,6 +12,11 @@
             <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="/barang"><i class="bi bi-box2-fill"></i> Barang</a>
             </li>
+            <% if (locals.userId) { %>
+              <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="/peminjam"><i class="bi bi-people-fill"></i> Peminjam</a>
+              </li>
+            <% } %>
             </ul>
             <div class="d-flex">
                 <% if (locals.userId) { %>
