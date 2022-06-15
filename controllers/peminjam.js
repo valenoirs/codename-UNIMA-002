@@ -1,4 +1,5 @@
-const Peminjam = require("../models/peminjam")
+const Peminjam = require('../models/peminjam')
+const Barang = require('../models/barang')
 
 module.exports.addPeminjam = (req, res) => {
     try{
@@ -28,7 +29,6 @@ exports.editPeminjam = async (req, res) => {
                 noSurat,
                 name,
                 tujuan,
-                status,
             }
         })
 
@@ -42,10 +42,63 @@ exports.editPeminjam = async (req, res) => {
     }
 }
 
+exports.updatePeminjam = async (req, res) => {
+    try{
+        const {id, code, quantity} = req.body
+        const isArray = Array.isArray(code)
+
+        await Peminjam.findByIdAndUpdate(id, {
+            $set: {
+                status: 'Dikembalikan'
+            }
+        })
+
+        if(isArray){
+            code.forEach(async (e,i) => {
+                const barang = await Barang.findOne({code : e})
+                const newStock = barang.stock + parseInt(quantity[i])
+                await Barang.updateOne({code: e}, {
+                    $set: {
+                        stock: newStock
+                    }
+                })
+            })
+        }
+        else{
+            const barang = await Barang.findOne({code})
+            const newStock = barang.stock + parseInt(quantity)
+            await Barang.updateOne({code}, {
+                $set: {
+                    stock: newStock
+                }
+            })
+        }
+
+
+        console.log('peminjam update')
+        return res.redirect('/peminjam')
+    }
+    catch (e){
+        console.error('updating peminjam error!', e)
+        req.flash('error', 'Gagal mengupdate status peminjam, silahkan coba lagi.')
+        return res.redirect('/peminjam')
+    }
+}
+
 exports.addBarang = async (req, res) => {
     console.log(req.body)
     try{
         const {code, quantity, id} = req.body
+
+        const barang = await Barang.findOne({code})
+
+        if(barang.stock < quantity){
+            console.error('stock barang tidak cukup!')
+            req.flash('error', 'Gagal menambah barang peminjam, stock barang tidak cukup.')
+            return res.redirect('/peminjam')
+        }
+
+        const newStock = barang.stock - quantity
 
         await Peminjam.findByIdAndUpdate(id, {
             $push: {
@@ -56,12 +109,51 @@ exports.addBarang = async (req, res) => {
             }
         })
 
+        await Barang.updateOne({code}, {
+            $set: {
+                stock: newStock
+            }
+        })
+
         console.log('barang peminjam update')
         return res.redirect('/peminjam')
     }
     catch (e){
         console.error('tambah barang peminjam error!')
         req.flash('error', 'Gagal menambah barang peminjam, silahkan coba lagi.')
+        return res.redirect('/peminjam')
+    }
+}
+
+exports.deleteBarang = async (req, res) => {
+    console.log(req.body)
+    try{
+        const {id, idBarang, quantity, code} = req.body
+
+        const barang = await Barang.findOne({code})
+
+        await Peminjam.findByIdAndUpdate(id, {
+            $pull: {
+                barang: {
+                    _id: idBarang
+                }
+            }
+        })
+
+        const newStock = barang.stock + parseInt(quantity)
+
+        await Barang.updateOne({code}, {
+            $set: {
+                stock: newStock
+            }
+        })
+
+        console.log('barang peminjam dihapus')
+        return res.redirect('/peminjam')
+    }
+    catch (e){
+        console.error('hapus barang peminjam error!', e)
+        req.flash('error', 'Gagal menghapus barang peminjam, silahkan coba lagi.')
         return res.redirect('/peminjam')
     }
 }
