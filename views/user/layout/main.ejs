@@ -19,10 +19,17 @@
     <!-- Icon -->
     <link rel="icon" href="./favicon.ico">
     <style>
+        html{
+            min-height: 100vh;
+        }
         body {
             background: rgb(248, 249, 250);
-            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            /* font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; */
             /* font-family: Georgia, 'Times New Roman', Times, serif; */
+        }
+
+        main {
+            /* margin-top: 6rem; */
         }
     </style>
 </head>
@@ -32,6 +39,7 @@
         <%- include('nav') %> 
     </header>
 
+    
     <main>
         <%- body %> 
     </main>
