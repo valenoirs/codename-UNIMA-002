@@ -1,7 +1,151 @@
-<div class="container-fluid">
+<div class="container-fluid" style="padding-top:4rem;">
     <div class="row">
-        <div class="col">
-            Barang
+        <div class="col p-5">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width: 3rem;">No</th>
+                    <th scope="col">Kode Barang</th>
+                    <th scope="col">Nama Barang</th>
+                    <th scope="col">Stock</th>
+                    <% if (locals.userId) { %>
+                        <th scope="col" style="width: 10rem;">Detail</th>
+                    <% } %>
+                  </tr>
+                </thead>
+                <tbody>
+                    <% barang.forEach((barang, index) => { %>
+                        <tr>
+                          <th scope="row"><%= index + 1 %></th>
+                          <td><%= barang.code %></td>
+                          <td><%= barang.name %></td>
+                          <td><%= barang.stock %></td>
+                          <% if (locals.userId) { %>
+                            <td>
+                                <div class="input-group">
+                                    <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#edit<%= barang.id %>">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </button>
+                                    <button type="submit" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#delete<%= barang.id %>">
+                                        <i class="bi bi-file-earmark-x-fill"></i>
+                                    </button>
+                                </div>
+                            </td>
+                          <% } %>
+                        </tr>
+                    <% }) %>
+                </tbody>
+              </table>
+              <% if (locals.userId) { %>
+                <button type="button" class="btn btn-outline-dark mt-4" data-bs-toggle="modal" data-bs-target="#tambahBarang">
+                  Tambah Barang
+                </button>
+              <% } %>
         </div>
     </div>
 </div>
+<hr>
+
+<% barang.forEach(barang => { %>
+    <!-- Delete -->
+    <div class="modal fade" id="delete<%= barang.id %>" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Hapus <%= barang.code %> : <%= barang.name %>?</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+              <form method="POST" action="/barang?_method=DELETE">
+                <input type="hidden" name="id" value=<%= barang.id %>>
+      
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                <button type="submit" class="btn btn-danger">Hapus Barang</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <!-- Edit -->
+    <div class="modal fade" id="edit<%= barang.id %>" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Edit Barang</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="/barang?_method=PUT">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nama Barang</label>
+                        <input type="text" class="form-control" id="name" name="name" value=<%= barang.name %> required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="code" class="form-label">Kode Barang</label>
+                        <input type="text" class="form-control" id="code" name="code" value=<%= barang.code %> required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="brand" class="form-label">Brand</label>
+                        <input type="text" class="form-control" id="brand" name="brand" value=<%= barang.brand %> required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="category" class="form-label">Kategori</label>
+                        <input type="text" class="form-control" id="category" name="category" value=<%= barang.category %> required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="stock" class="form-label">Jumlah</label>
+                        <input type="Number" class="form-control" id="stock" name="stock" value=<%= barang.stock %> required>
+                    </div>
+
+                    <input type="hidden" name="id" value=<%= barang.id %>>
+            </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Edit Barang</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+      </div>
+<% }) %>
+
+<!-- Modal -->
+<div class="modal fade" id="tambahBarang" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Tambah Barang</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form method="post" action="/barang">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Nama Barang</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="code" class="form-label">Kode Barang</label>
+                    <input type="text" class="form-control" id="code" name="code" required>
+                </div>
+                <div class="mb-3">
+                    <label for="brand" class="form-label">Brand</label>
+                    <input type="text" class="form-control" id="brand" name="brand" required>
+                </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label">Kategori</label>
+                    <input type="text" class="form-control" id="category" name="category" required>
+                </div>
+                <div class="mb-3">
+                    <label for="stock" class="form-label">Jumlah</label>
+                    <input type="Number" class="form-control" id="stock" name="stock" required>
+                </div>
+        </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary">Tambah Barang</button>
+                </div>
+            </form>
+        </div>
+    </div>
+  </div>
