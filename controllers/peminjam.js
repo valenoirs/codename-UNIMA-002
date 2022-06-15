@@ -48,7 +48,7 @@ exports.addBarang = async (req, res) => {
         const {code, quantity, id} = req.body
 
         await Peminjam.findByIdAndUpdate(id, {
-            $set: {
+            $push: {
                 barang: {
                     code,
                     quantity

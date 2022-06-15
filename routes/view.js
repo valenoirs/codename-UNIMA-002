@@ -15,8 +15,9 @@ router.get('/barang', async (req, res) => {
 
 router.get('/peminjam', async (req, res) => {
     const peminjam = await Peminjam.find()
+    const barang = await Barang.find()
 
-    res.render('user/peminjam', {title: 'Peminjam', layout: 'user/layout/main', error: req.flash('error'), peminjam})
+    res.render('user/peminjam', {title: 'Peminjam', layout: 'user/layout/main', error: req.flash('error'), peminjam, barang})
 })
 
 module.exports = router

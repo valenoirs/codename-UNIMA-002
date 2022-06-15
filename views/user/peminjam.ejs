@@ -22,22 +22,22 @@
                           <td><%= peminjam.noSurat %></td>
                           <td><%= peminjam.name %></td>
                           <td>
-                            <% peminjam.barang.forEach(barang=> { %>
-                                <a class="text-primary" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" style="text-decoration: none;">
-                                    <%= barang.code %>
-                                </a>
-                            x <%= barang.quantity %>
-                            <br>
+                              <% peminjam.barang.forEach(barang=> { %>
+                                <form method="post" action="/peminjam?_method=DELETE">
+                                    <a role="button" class="text-primary" data-bs-toggle="modal" data-bs-target="#detail<%= barang.code %>" style="text-decoration: none;">
+                                        <%= barang.code %>
+                                    </a>
+                                    x <%= barang.quantity %>
+                                    <input type="hidden" name="id" value=<%= peminjam.id %>>
+                                    <button type="submit" class="btn text-danger" style="border: 0; padding: 0; margin: 0;"><i class="bi bi-file-earmark-x-fill"></i></button>
+                                </form>
                             <% }) %>
-                            <a class="text-success" role="button" data-bs-toggle="modal" data-bs-target="#barang<%= peminjam.id %>" style="text-decoration: none;">
-                                Barang <i class="bi bi-clipboard-plus-fill"></i>
-                            </a>
                         </td>
                           <td><%= peminjam.tujuan %></td>
                           <td><%= peminjam.status %></td>
                           <td>
                             <a role="button" class="text-success" data-bs-toggle="modal" data-bs-target="#edit<%= peminjam.id %>" style="text-decoration: none;">
-                                Edit <i class="bi bi-pencil-fill"></i>
+                                Detail <i class="bi bi-pencil-fill"></i>
                             </a>
                           </td>
                         </tr>
@@ -52,7 +52,30 @@
 </div>
 <hr>
 
+<% barang.forEach(barang => { %>
+    <!-- Detail Barang Peminjam -->
+    <div class="modal fade" id="detail<%= barang.code %>" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Detail Barang : <%= barang.code %></h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+                <div class="modal-body">
+                    <p>Nama Barang : <%= barang.name %></p>
+                    <p>Kategori : <%= barang.category %></p>
+                    <p>Merk : <%= barang.brand %></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+      </div>
+<% }) %>
+
 <% peminjam.forEach(peminjam => { %>
+    
 <!-- Tambah Barang -->
 <div class="modal fade" id="barang<%= peminjam.id %>" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable">
@@ -65,14 +88,24 @@
             <form method="post" action="/peminjam?_method=PUT">
                 <div class="mb-3">
                     <label for="code" class="form-label">Kode Barang</label>
-                    <input type="text" class="form-control" id="code" name="code" required>
+                    <select name="code" class="form-select" aria-label="Default select example" required>
+                        <option value="" selected>Open this select menu</option>
+                        <% barang.forEach(barang => { %>
+                            <option value=<%= barang.code %>><%= barang.code %> : <%= barang.name %></option>
+                        <% }) %>
+                    </select>
                 </div>
+
                 <div class="mb-3">
                     <label for="quantity" class="form-label">Jumlah Dipinjam</label>
                     <input type="number" class="form-control" id="quantity" name="quantity" required>
                 </div>
 
                 <input type="hidden" name="id" value=<%= peminjam.id %>>
+
+                <a class="text-success" role="button" data-bs-toggle="modal" data-bs-target="#edit<%= peminjam.id %>" style="text-decoration: none;">
+                    <h6>< Kembali</h6>
+                </a>
         </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
@@ -115,6 +148,10 @@
                 </div>
 
                 <input type="hidden" name="id" value=<%= peminjam.id %>>
+
+                <a class="text-success" role="button" data-bs-toggle="modal" data-bs-target="#barang<%= peminjam.id %>" style="text-decoration: none;">
+                    <h6>Tambah Barang <i class="bi bi-clipboard-plus-fill"></i></h6>
+                </a>
         </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
@@ -126,7 +163,7 @@
   </div>
 <% }) %>
 
-<!-- Modal -->
+<!-- Tambah Peminjam -->
 <div class="modal fade" id="tambahPeminjam" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
