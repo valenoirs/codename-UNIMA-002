@@ -1,7 +1,6 @@
 const Barang = require('../models/barang')
 
 module.exports.addBarang = (req, res) => {
-    console.log(req.body)
     try{
         const newBarang = new Barang(req.body)
 

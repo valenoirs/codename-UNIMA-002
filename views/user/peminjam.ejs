@@ -5,42 +5,159 @@
                 <thead>
                   <tr>
                     <th scope="col" style="width: 3rem;">No</th>
-                    <th scope="col">Kode Barang</th>
-                    <th scope="col">Nama Barang</th>
-                    <th scope="col">Stock</th>
-                    <% if (locals.userId) { %>
-                        <th scope="col" style="width: 10rem;">Detail</th>
-                    <% } %>
+                    <th scope="col">Instansi</th>
+                    <th scope="col">No. Surat</th>
+                    <th scope="col">Penanggung jawab</th>
+                    <th scope="col">Barang</th>
+                    <th scope="col">Tujuan</th>
+                    <th scope="col">Status</th>
+                    <th scope="col" style="width: 10rem;">Detail</th>
                   </tr>
                 </thead>
                 <tbody>
-                    <% barang.forEach((barang, index) => { %>
+                    <% peminjam.forEach((peminjam, index) => { %>
                         <tr>
                           <th scope="row"><%= index + 1 %></th>
-                          <td><%= barang.code %></td>
-                          <td><%= barang.name %></td>
-                          <td><%= barang.stock %></td>
-                          <% if (locals.userId) { %>
-                            <td>
-                                <div class="input-group">
-                                    <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#edit<%= barang.id %>">
-                                        <i class="bi bi-pencil-fill"></i>
-                                    </button>
-                                    <button type="submit" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#delete<%= barang.id %>">
-                                        <i class="bi bi-file-earmark-x-fill"></i>
-                                    </button>
-                                </div>
-                            </td>
-                          <% } %>
+                          <td><%= peminjam.instansi %></td>
+                          <td><%= peminjam.noSurat %></td>
+                          <td><%= peminjam.name %></td>
+                          <td>
+                            <% peminjam.barang.forEach(barang=> { %>
+                                <a class="text-primary" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" style="text-decoration: none;">
+                                    <%= barang.code %>
+                                </a>
+                            x <%= barang.quantity %>
+                            <br>
+                            <% }) %>
+                            <a class="text-success" role="button" data-bs-toggle="modal" data-bs-target="#barang<%= peminjam.id %>" style="text-decoration: none;">
+                                Barang <i class="bi bi-clipboard-plus-fill"></i>
+                            </a>
+                        </td>
+                          <td><%= peminjam.tujuan %></td>
+                          <td><%= peminjam.status %></td>
+                          <td>
+                            <a role="button" class="text-success" data-bs-toggle="modal" data-bs-target="#edit<%= peminjam.id %>" style="text-decoration: none;">
+                                Edit <i class="bi bi-pencil-fill"></i>
+                            </a>
+                          </td>
                         </tr>
                     <% }) %>
                 </tbody>
-              </table>
-              <% if (locals.userId) { %>
-                <button type="button" class="btn btn-outline-dark mt-4" data-bs-toggle="modal" data-bs-target="#tambahBarang">
-                  Tambah Barang
-                </button>
-              <% } %>
+            </table>
+            <button type="button" class="btn btn-outline-dark mt-4" data-bs-toggle="modal" data-bs-target="#tambahPeminjam">
+                Tambah Peminjam
+            </button>
         </div>
     </div>
 </div>
+<hr>
+
+<% peminjam.forEach(peminjam => { %>
+<!-- Tambah Barang -->
+<div class="modal fade" id="barang<%= peminjam.id %>" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Tambah Barang</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form method="post" action="/peminjam?_method=PUT">
+                <div class="mb-3">
+                    <label for="code" class="form-label">Kode Barang</label>
+                    <input type="text" class="form-control" id="code" name="code" required>
+                </div>
+                <div class="mb-3">
+                    <label for="quantity" class="form-label">Jumlah Dipinjam</label>
+                    <input type="number" class="form-control" id="quantity" name="quantity" required>
+                </div>
+
+                <input type="hidden" name="id" value=<%= peminjam.id %>>
+        </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary">Tambah Barang</button>
+                </div>
+            </form>
+        </div>
+    </div>
+  </div>
+
+    <!-- Edit Peminjam -->
+<div class="modal fade" id="edit<%= peminjam.id %>" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit Peminjam</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form method="post" action="/peminjam?_method=PATCH">
+                <div class="mb-3">
+                    <label for="instansi" class="form-label">Instansi</label>
+                    <input type="text" class="form-control" id="instansi" name="instansi" value=<%= peminjam.instansi %> required>
+                </div>
+                <div class="mb-3">
+                    <label for="noSurat" class="form-label">Nomor Surat</label>
+                    <input type="text" class="form-control" id="noSurat" name="noSurat" value=<%= peminjam.noSurat %> required>
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Penanggung jawab</label>
+                    <input type="text" class="form-control" id="name" name="name" value=<%= peminjam.name %> required>
+                </div>
+                <div class="mb-3">
+                    <label for="tujuan" class="form-label">Tujuan</label>
+                    <input type="text" class="form-control" id="tujuan" name="tujuan" value=<%= peminjam.tujuan %> required>
+                </div>
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <input type="text" class="form-control" id="status" name="status" value=<%= peminjam.status %> required>
+                </div>
+
+                <input type="hidden" name="id" value=<%= peminjam.id %>>
+        </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary">Edit Peminjam</button>
+                </div>
+            </form>
+        </div>
+    </div>
+  </div>
+<% }) %>
+
+<!-- Modal -->
+<div class="modal fade" id="tambahPeminjam" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Tambah Peminjam</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form method="post" action="/peminjam">
+                <div class="mb-3">
+                    <label for="instansi" class="form-label">Instansi</label>
+                    <input type="text" class="form-control" id="instansi" name="instansi" required>
+                </div>
+                <div class="mb-3">
+                    <label for="noSurat" class="form-label">Nomor Surat</label>
+                    <input type="text" class="form-control" id="noSurat" name="noSurat" required>
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Penanggung jawab</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="tujuan" class="form-label">Tujuan</label>
+                    <textarea class="form-control" name="tujuan" id="tujuan" rows="3" style="resize: none;" required></textarea>
+                </div>
+        </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary">Tambah Peminjam</button>
+                </div>
+            </form>
+        </div>
+    </div>
+  </div>

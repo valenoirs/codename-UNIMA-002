@@ -13,8 +13,10 @@ router.get('/barang', async (req, res) => {
     res.render('user/barang', {title: 'Barang', layout: 'user/layout/main', error: req.flash('error'), barang})
 })
 
-router.get('/peminjam', (req, res) => {
-    res.render('user/peminjam', {title: 'Peminjam', layout: 'user/layout/main', error: req.flash('error')})
+router.get('/peminjam', async (req, res) => {
+    const peminjam = await Peminjam.find()
+
+    res.render('user/peminjam', {title: 'Peminjam', layout: 'user/layout/main', error: req.flash('error'), peminjam})
 })
 
 module.exports = router
