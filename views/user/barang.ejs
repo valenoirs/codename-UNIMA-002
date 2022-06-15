@@ -1,4 +1,4 @@
-<div class="container-fluid" style="padding-top:4rem;">
+<div class="container-fluid" style="padding-top:4rem;" data-aos="fade-down">
     <div class="row">
         <div class="col p-5">
             <table class="table">
@@ -22,12 +22,12 @@
                           <td><%= barang.stock %></td>
                           <% if (locals.userId) { %>
                             <td>
-                                <div class="input-group">
-                                    <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#edit<%= barang.id %>">
-                                        <i class="bi bi-pencil-fill"></i>
+                                <div class="">
+                                    <button type="button" class="btn text-success" data-bs-toggle="modal" data-bs-target="#edit<%= barang.id %>" style="border:0;padding:0;">
+                                        Edit <i class="bi bi-pencil-fill"></i>
                                     </button>
-                                    <button type="submit" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#delete<%= barang.id %>">
-                                        <i class="bi bi-file-earmark-x-fill"></i>
+                                    <button type="submit" class="btn text-danger" data-bs-toggle="modal" data-bs-target="#delete<%= barang.id %>" style="border:0;padding:0;">
+                                        Hapus<i class="bi bi-file-earmark-x-fill"></i>
                                     </button>
                                 </div>
                             </td>
