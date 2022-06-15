@@ -20,16 +20,22 @@
     <link rel="icon" href="./favicon.ico">
     <style>
         html{
-            min-height: 100vh;
+            min-height: 100%;
         }
         body {
             background: rgb(248, 249, 250);
             /* font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; */
-            /* font-family: Georgia, 'Times New Roman', Times, serif; */
+
+            /* position: relative; */
+            /* min-height: 100%; */
+        }
+
+        body footer {
+            /* position: absolute; bottom: 0; width: 100%; */
         }
 
         main {
-            /* margin-top: 6rem; */
+            /* padding-bottom: 30rem; */
         }
     </style>
 </head>
@@ -41,6 +47,18 @@
 
     
     <main>
+        <!-- Error Container -->
+        <div class="containter">
+            <% if (error.length > 0) { %>
+            <div class="row" style="margin: 100px 50px 0px 50px;">
+                <div class="alert alert-primary alert-dismissible">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <i class="bi bi-info-circle-fill"></i> <%= error %>
+                </div>
+            </div>
+            <% } %>
+        </div>
+
         <%- body %> 
     </main>
 

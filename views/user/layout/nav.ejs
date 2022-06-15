@@ -15,11 +15,18 @@
             </ul>
             <div class="d-flex">
                 <% if (locals.userId) { %>
-                    <a class="text-dark me-4" href="/user/logout" style="text-decoration: none;"><i class="bi bi-person-circle"></i> Logout</a>
+                  <div class="dropdown">
+                    <a class="text-dark me-4" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" style="text-decoration: none;"><i class="bi bi-person-circle"></i> Sign out</a>
+                    <div class="dropdown-menu dropdown-menu-lg-end p-4" style="width: 200px;">
+                      <h6><%= locals.userName %></h6>
+                      <p><%= locals.userEmail %></p>
+                      <a class="text-danger me-4" href="/user/logout" style="text-decoration: none;"> Logout</a>
+                    </div>
+                  </div>
                 <% } else { %>
                   <div class="dropdown">
-                    <a class="text-dark me-4" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;"><i class="bi bi-person-circle"></i> Sign in</a>
-                    <form class="dropdown-menu dropdown-menu-lg-end p-4" style="width: 300px;">
+                    <a class="text-dark me-4" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" style="text-decoration: none;"><i class="bi bi-person-circle"></i> Sign in</a>
+                    <form method="POST" action="/user/login" class="dropdown-menu dropdown-menu-lg-end p-4" style="width: 300px;">
                       <div class="mb-3">
                         <label for="exampleDropdownFormEmail2" class="form-label">Email address</label>
                         <input type="email" class="form-control" id="exampleDropdownFormEmail2" placeholder="email@example.com" name="email" aria-describedby="emailHelp" required>
