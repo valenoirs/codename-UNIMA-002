@@ -1,11 +1,11 @@
 const Barang = require('../models/barang')
 
-module.exports.addBarang = (req, res) => {
+module.exports.addBarang = async (req, res) => {
     try{
         const newBarang = new Barang(req.body)
 
         console.log(newBarang)
-        newBarang.save()
+        await newBarang.save()
 
         console.log('barang baru ditambahkan')
         return res.redirect('/barang')

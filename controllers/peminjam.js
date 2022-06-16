@@ -1,12 +1,12 @@
 const Peminjam = require('../models/peminjam')
 const Barang = require('../models/barang')
 
-module.exports.addPeminjam = (req, res) => {
+module.exports.addPeminjam = async (req, res) => {
     try{
         const newPeminjam = new Peminjam(req.body)
 
         console.log(newPeminjam)
-        newPeminjam.save()
+        await newPeminjam.save()
 
         console.log('Peminjam added')
         return res.redirect('/peminjam')
