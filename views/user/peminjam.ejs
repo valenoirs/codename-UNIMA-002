@@ -28,7 +28,7 @@
                                         <%= barang.code %>
                                     </a>
                                     x <%= barang.quantity %>
-                                    <% if (peminjam.status === 'Belum Dikembalikan') { %>
+                                    <% if (peminjam.status === 'Dipinjam') { %>
                                         <input type="hidden" name="idBarang" value=<%= barang.id %>>
                                         <input type="hidden" name="id" value=<%= peminjam.id %>>
                                         <input type="hidden" name="quantity" value=<%= barang.quantity %>>
@@ -159,7 +159,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="tujuan" class="form-label">Tujuan</label>
-                    <input type="text" class="form-control" id="tujuan" name="tujuan" value=<%= peminjam.tujuan %> required>
+                    <textarea class="form-control" name="tujuan" id="tujuan" rows="3" style="resize: none;" required><%= peminjam.tujuan %></textarea>
                 </div>
                 
                 <input type="hidden" name="id" value=<%= peminjam.id %>>
