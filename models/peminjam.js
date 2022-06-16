@@ -10,7 +10,7 @@ const Peminjam = mongoose.model('Peminjam', new mongoose.Schema({
     instansi: {type:String, required:true},
     noSurat: {type:String, required:true},
     tujuan: {type:String, required:true},
-    status: {type:String, required:true, default:'Belum Dikembalikan'},
+    status: {type:String, required:true, default:'Dipinjam'},
     barang: {type:[schemaBarang], default: []}
 }))
 
