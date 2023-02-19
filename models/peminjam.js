@@ -11,7 +11,8 @@ const Peminjam = mongoose.model('Peminjam', new mongoose.Schema({
     noSurat: {type:String, required:true},
     tujuan: {type:String, required:true},
     status: {type:String, required:true, default:'Dipinjam'},
-    barang: {type:[schemaBarang], default: []}
+    barang: {type:[schemaBarang], default: []},
+    dikembalikan: {type:Date, default: null}
 }))
 
 module.exports = Peminjam;

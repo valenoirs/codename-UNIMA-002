@@ -26,4 +26,8 @@ router.get('/peminjam', async (req, res) => {
     }
 })
 
+router.get('/user/register', (req, res) => {
+    res.render('user/register', {title: 'Register', layout: 'user/layout/main', error: req.flash('error')})
+})
+
 module.exports = router

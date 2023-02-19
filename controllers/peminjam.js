@@ -49,7 +49,8 @@ exports.updatePeminjam = async (req, res) => {
 
         await Peminjam.findByIdAndUpdate(id, {
             $set: {
-                status: 'Dikembalikan'
+                status: 'Dikembalikan',
+                dikembalikan: new Date(Date.now())
             }
         })
 

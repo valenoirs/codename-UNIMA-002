@@ -47,6 +47,19 @@ exports.login = async (req, res) => {
     catch (e) {
         console.error('login-error', e)
         req.flash('error', 'Login Error!')
-        return res.redirect('back')
+        return res.redirect('/')
+    }
+}
+
+exports.register = async (req, res) => {
+    try {
+        await new User(req.body).save()
+
+        console.log('user registered')
+        return res.redirect('/')
+    } catch (error) {
+        console.error('register-error', error)
+        req.flash('error', 'Register Error!')
+        return res.redirect('/')
     }
 }

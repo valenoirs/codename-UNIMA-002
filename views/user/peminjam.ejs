@@ -10,6 +10,7 @@
                     <th scope="col">Penanggung jawab</th>
                     <th scope="col">Barang</th>
                     <th scope="col">Tujuan</th>
+                    <th scope='col'>Tanggal Dikembalikan</th>
                     <th scope="col">Status</th>
                     <th scope="col" style="width: 10rem;">Detail</th>
                   </tr>
@@ -39,6 +40,13 @@
                             <% }) %>
                         </td>
                           <td><%= peminjam.tujuan %></td>
+                          <td>
+                              <% if (peminjam.dikembalikan !== null) { %>
+                                <%= peminjam.dikembalikan.toLocaleString('id', {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'}) %>
+                              <% } else {%>
+                              Belum dikembalikkan
+                              <% } %> 
+                            </td>
                           <td><%= peminjam.status %></td>
                           <td>
                             <% if (peminjam.status === 'Dikembalikan') { %>
